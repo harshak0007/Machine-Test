@@ -20,14 +20,14 @@ const isDuplicateEmailSignup = async (email) => {
 };
 router.post("/signup", async (req, res) => {
   try {
-    console.log(req.body);
+  
     const { f_userName, f_Email, f_Pwd } = req.body;
     const result = await isDuplicateEmailSignup(f_Email);
-    console.log(result);
+   
     if (result) {
       return res.status(400).send({ error: "Email already exists." });
     }
-    console.log("hllo");
+   
     const salt = await bcryptsjs.genSalt(10);
     const hashedPassword = await bcryptsjs.hash(f_Pwd, salt);
     const login = new Login({
@@ -38,7 +38,7 @@ router.post("/signup", async (req, res) => {
     });
 
     await login.save();
-    console.log(login);
+ 
     res.status(200).send({ message: "Successful" });
   } catch (error) {
     res.status(400).send(error);
@@ -46,13 +46,13 @@ router.post("/signup", async (req, res) => {
 });
 router.post("/login", async (req, res) => {
   try {
-    console.log(req.body);
+ 
     const { f_userName, f_Pwd } = req.body;
     const user = await Login.findOne({ f_userName: f_userName });
-    console.log(user);
+
 
     const validpassword = await bcryptsjs.compare(f_Pwd, user.f_Pwd);
-    console.log(validpassword);
+
 
     if (!validpassword) {
       return res.status(400).send({ error: "Check your credentials!" });
@@ -64,11 +64,10 @@ router.post("/login", async (req, res) => {
       email: user.f_Email,
     };
 
-    console.log(process.env.JWT_SECRET_KEY);
     const token = await jwt.sign(tokenData, process.env.JWT_SECRET_KEY, {
       expiresIn: "1h",
     });
-    console.log("token", token);
+    
 
     // Send token to the client
     res.status(200).json({ token });
