@@ -1,5 +1,9 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-mongoose.connect("mongodb://127.0.0.1:27017/Employee").then(() => {
-  console.log(`Connection Succefully`);
-});
+mongoose
+	.connect(
+		'mongodb+srv://harshaksaini:rs9MZfv4n5Qngrbp@cluster0.7innx4a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+	)
+	.then(() => {
+		console.log(`Connection Succefully`);
+	});
